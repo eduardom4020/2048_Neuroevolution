@@ -1,7 +1,5 @@
 #include <QCoreApplication>
 #include <iostream>
-//#include <chrono>
-//#include <thread>
 #include <vector>
 #include <ctime>
 #include <fstream>
