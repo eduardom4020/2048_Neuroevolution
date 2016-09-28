@@ -391,3 +391,21 @@ int Game::getScore()
 {
     return score;
 }
+
+int Game::getGreaterSquare()
+{
+    int max = 0;
+
+    for (unsigned int i = 0; i < ROWS; ++i)
+    {
+        for (unsigned int j = 0; j < COLS; ++j)
+        {
+            if(game[i][j] > i)
+            {
+                i = game[i][j];
+            }
+        }
+    }
+
+    return max;
+}

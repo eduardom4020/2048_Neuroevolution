@@ -21,8 +21,8 @@
 #endif // win32
 
 
-#define GAME_MAX_TIME       60
-#define NUM_GENERATIONS     10
+#define GAME_MAX_TIME       30
+#define NUM_GENERATIONS     25
 
 using namespace std;
 
@@ -90,8 +90,9 @@ int main(int argc, char *argv[])
      *r(min,max) indica quantos genes serao criados aleatoriamente, podendo ser neuronio ou coneccao
     */
         evol.generateRandomPopulation("f(192);f(4000);", 100);
-//        system("clear");  //linux
-        system("cls");  //windows
+
+        system("clear");  //linux
+//        system("cls");  //windows
         printf("Comecando um novo jogo!\n");
 
         sleep(1000);
@@ -114,16 +115,18 @@ int main(int argc, char *argv[])
     {
         ostringstream score_txt;
         score_txt << "scores_generation_" << evol.getGeneration() << ".txt";
-        ofstream file_out(score_txt.str().c_str());
+        ofstream score_file_out(score_txt.str().c_str());
+
+        ostringstream gs_txt;
+        score_txt << "greater_square_generation_" << evol.getGeneration() << ".txt";
+        ofstream gs_file_out(gs_txt.str().c_str());
 
         for(unsigned int i=0; i<evol.getPopulationSize(); i++)  //loop dos individuos
         {
-//            system("clear");  //linux
-            system("cls");  //windows
+            system("clear");  //linux
+//            system("cls");  //windows
             printf("Geracao: %d\n", evol.getGeneration());
             printf("Individuo: %d\n", i);
-//            printf("%d\n",individual.getNumOfCells());
-//            printf("%d\n",individual.getNumberOfOutputs());
 
             time_t start = time(NULL);
 
@@ -158,15 +161,31 @@ int main(int argc, char *argv[])
                 }
                 else
                 {
+                //ao surgir um individuo com o numero de neuronios de saida sendo zero
+                //o individuo eh zerado, segundo a propria implementacao do individuo.
+                //Precisamos entao redefinir o numero de entradas e de saidas.
+
+                //Ou seja, o comando addCell cria uma mascara que determina quantos
+                //neuronis serao necessarios para que o individuo seja interpretado
+                //quando um individuo possui menos neuronios que os exigidos para
+                //E/S, esta mascara eh deletada. Com isso precisamos redefinir a quantidade
+                //de neuronios, recriando a mascara que foi deletada.
+
+                    for(int i=0; i<16; i++)
+                        individual.addCell(ntAfferent);
+                    for(int i=0; i<2; i++)
+                        individual.addCell(ntEfferent);
+
                     error = true;
 //                    system("clear");
-                    system("cls");  //windows
+//                    system("cls");  //windows
                     printf("Individuo %d possui cerebro incompativel!\n", i);
-                    sleep(1000);
 
-                    evol.setEvaluation(i,-1); // -1 deve ser um valor muito ruim para que esse individuo nao se repita
+                    evol.setEvaluation(i,0); // -1 deve ser um valor muito ruim para que esse individuo nao se repita
                     game.score = -1;
                     game.gameIsNotOver = false;
+
+                    sleep(500);
                 }
 
             }
@@ -183,16 +202,19 @@ int main(int argc, char *argv[])
             if(!error)
                 evol.setEvaluation(i,(1-(game.getScore()/3932156)));
 
-            file_out << game.getScore() << "\n";
+//            file_out.open();
+            score_file_out << game.getScore() << "\n";
+            gs_file_out << game.getGreaterSquare() << "\n";
 
-            game.score=0;
-            game.gameIsNotOver = true;
+//            game.score=0;
+//            game.gameIsNotOver = true;
         }
 
-        //ao final do loop dos individuos, basta salvar a geracao e evolui-los:
-        evol.saveCheckPoint("checkpoint");
+        //ao final do loop dos individuos, basta evoluir a geracao e salva-la:
         evol.evolve();
-        file_out.close();
+        evol.saveCheckPoint("checkpoint");
+        score_file_out.close();
+        gs_file_out.close();
     }
 
     return 0;

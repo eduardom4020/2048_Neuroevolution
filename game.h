@@ -42,6 +42,7 @@ public:
     void setInput(int input);
     floatv getGameState();
     int getScore();
+    int getGreaterSquare();
 
 #endif // GAME_H
 };
