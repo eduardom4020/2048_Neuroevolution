@@ -175,7 +175,7 @@ int main(int argc, char *argv[])
                         individual.addCell(ntEfferent);
 
                     error = true;
-//                    system("clear");
+                    system("clear");
 //                    system("cls");  //windows
                     printf("Individuo %d possui cerebro incompativel!\n", i);
 
@@ -202,10 +202,10 @@ int main(int argc, char *argv[])
 
 //            file_out.open();
             score_file_out << game.getScore() << "\n";
-            gs_file_out << game.getGreaterSquare() << "\n";
+//            gs_file_out << game.getGreaterSquare() << "\n";
 
-//            game.score=0;
-//            game.gameIsNotOver = true;
+            game.score=0;
+            game.gameIsNotOver = true;
         }
 
         //ao final do loop dos individuos, basta evoluir a geracao e salva-la:
