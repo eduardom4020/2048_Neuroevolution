@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 3.5.1, 2016-09-29T07:58:49. -->
+<!-- Written by QtCreator 3.5.1, 2016-09-30T07:57:52. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -241,7 +241,7 @@
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">2048_Neuroevolution_WithoutInterface</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">2048_Neuroevolution_WithoutInterface2</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/nfs/emelo/2048_Neuroevolution/2048_Project/2048_Neuroevolution_WithoutInterface.pro</value>
-    <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.CommandLineArguments">-continue</value>
+    <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.CommandLineArguments">-begin</value>
     <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.ProFile">2048_Neuroevolution_WithoutInterface.pro</value>
     <value type="bool" key="Qt4ProjectManager.Qt4RunConfiguration.UseDyldImageSuffix">false</value>
     <value type="bool" key="Qt4ProjectManager.Qt4RunConfiguration.UseTerminal">true</value>

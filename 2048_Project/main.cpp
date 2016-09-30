@@ -20,7 +20,8 @@
 
 
 #define GAME_MAX_TIME       30
-#define NUM_GENERATIONS     25
+#define NUM_GENERATIONS     60
+#define SIMULATION_VERSION  1
 
 using namespace std;
 
@@ -112,12 +113,14 @@ int main(int argc, char *argv[])
     while(evol.getGeneration() < NUM_GENERATIONS)   //loop das geracoes
     {
         ostringstream score_txt;
-        score_txt << "scores_generation_" << evol.getGeneration() << ".txt";
+        score_txt << "scores_generation_" << evol.getGeneration() << SIMULATION_VERSION <<".txt";
         ofstream score_file_out(score_txt.str().c_str());
+        score_file_out.close();
 
         ostringstream gs_txt;
-        score_txt << "greater_square_generation_" << evol.getGeneration() << ".txt";
+        score_txt << "greater_square_generation_" << evol.getGeneration() << SIMULATION_VERSION << ".txt";
         ofstream gs_file_out(gs_txt.str().c_str());
+        gs_file_out.close();
 
         for(unsigned int i=0; i<evol.getPopulationSize(); i++)  //loop dos individuos
         {
@@ -200,9 +203,13 @@ int main(int argc, char *argv[])
             if(!error)
                 evol.setEvaluation(i,(1-(game.getScore()/3932156)));
 
-//            file_out.open();
+            score_file_out.open(std::fstream::in | std::fstream::app);
             score_file_out << game.getScore() << "\n";
-//            gs_file_out << game.getGreaterSquare() << "\n";
+            score_file_out.close();
+
+            gs_file_out.open(std::fstream::in | std::fstream::app);
+            gs_file_out << game.getGreaterSquare() << "\n";
+            gs_file_out.close();
 
             game.score=0;
             game.gameIsNotOver = true;
@@ -210,9 +217,10 @@ int main(int argc, char *argv[])
 
         //ao final do loop dos individuos, basta evoluir a geracao e salva-la:
         evol.evolve();
-        evol.saveCheckPoint("checkpoint");
-        score_file_out.close();
-        gs_file_out.close();
+
+        ostringstream checkpoint;
+        checkpoint << "checkpoint_" << SIMULATION_VERSION;
+        evol.saveCheckPoint(checkpoint);
     }
 
     return 0;
