@@ -114,13 +114,11 @@ int main(int argc, char *argv[])
     {
         ostringstream score_txt;
         score_txt << "scores_generation_" << evol.getGeneration() << SIMULATION_VERSION <<".txt";
-        ofstream score_file_out(score_txt.str().c_str());
-        score_file_out.close();
 
         ostringstream gs_txt;
-        score_txt << "greater_square_generation_" << evol.getGeneration() << SIMULATION_VERSION << ".txt";
-        ofstream gs_file_out(gs_txt.str().c_str());
-        gs_file_out.close();
+        gs_txt << "greater_square_generation_" << evol.getGeneration() << SIMULATION_VERSION << ".txt";
+
+        ofstream file_writer;
 
         for(unsigned int i=0; i<evol.getPopulationSize(); i++)  //loop dos individuos
         {
@@ -203,13 +201,13 @@ int main(int argc, char *argv[])
             if(!error)
                 evol.setEvaluation(i,(1-(game.getScore()/3932156)));
 
-            score_file_out.open(std::fstream::in | std::fstream::app);
-            score_file_out << game.getScore() << "\n";
-            score_file_out.close();
+            file_writer.open(score_txt.str().c_str(), ios_base::out | ios_base::app);
+            file_writer << game.getScore() << "\n";
+            file_writer.close();
 
-            gs_file_out.open(std::fstream::in | std::fstream::app);
-            gs_file_out << game.getGreaterSquare() << "\n";
-            gs_file_out.close();
+            file_writer.open(gs_txt.str().c_str(), ios_base::out | ios_base::app);
+            file_writer << game.getGreaterSquare() << "\n";
+            file_writer.close();
 
             game.score=0;
             game.gameIsNotOver = true;
@@ -220,7 +218,7 @@ int main(int argc, char *argv[])
 
         ostringstream checkpoint;
         checkpoint << "checkpoint_" << SIMULATION_VERSION;
-        evol.saveCheckPoint(checkpoint);
+        evol.saveCheckPoint(checkpoint.str().c_str());
     }
 
     return 0;
