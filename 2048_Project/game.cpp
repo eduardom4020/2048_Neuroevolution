@@ -400,9 +400,9 @@ int Game::getGreaterSquare()
     {
         for (unsigned int j = 0; j < COLS; ++j)
         {
-            if(game[i][j] > i)
+            if(game[i][j] > max)
             {
-                i = game[i][j];
+                max = game[i][j];
             }
         }
     }

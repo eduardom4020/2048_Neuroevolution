@@ -20,8 +20,8 @@
 
 
 #define GAME_MAX_TIME       30
-#define NUM_GENERATIONS     60
-#define SIMULATION_VERSION  1
+#define NUM_GENERATIONS     25
+#define SIMULATION_VERSION  2
 
 using namespace std;
 
@@ -75,6 +75,9 @@ int main(int argc, char *argv[])
     Game game;      //criamos um objeto do tipo jogo que serah utilizado pelos individuos
     bool error;
     float p = 0.0;
+
+    ostringstream checkpoint;
+    checkpoint << "checkpoint_" << SIMULATION_VERSION;
 //============================================================================================
 
 //utilizamos os parametros entrados para sabermos quais acoes devem ser tomadas pelo programa:
@@ -90,9 +93,9 @@ int main(int argc, char *argv[])
     */
         evol.generateRandomPopulation("f(192);f(4000);", 100);
 
-        system("clear");  //linux
-//        system("cls");  //windows
-        printf("Comecando um novo jogo!\n");
+//        system("clear");  //linux
+        system("cls");  //windows
+        cout << "Comecando um novo jogo!" << endl;
 
         sleep(1000);
     }
@@ -101,7 +104,7 @@ int main(int argc, char *argv[])
     {
     //para este caso, devemos carregar a geracao anterior feita pelo algoritmo
 
-        evol = GeneticAlgorithm("checkpoint");
+        evol = GeneticAlgorithm(checkpoint.str().c_str());
     }
 
     /*agora faremos o loop em que a evolucao ocorrerah, ou seja, para cada geracao
@@ -113,19 +116,19 @@ int main(int argc, char *argv[])
     while(evol.getGeneration() < NUM_GENERATIONS)   //loop das geracoes
     {
         ostringstream score_txt;
-        score_txt << "scores_generation_" << evol.getGeneration() << SIMULATION_VERSION <<".txt";
+        score_txt << "scores_generation_" << evol.getGeneration() << "_" << SIMULATION_VERSION <<".txt";
 
         ostringstream gs_txt;
-        gs_txt << "greater_square_generation_" << evol.getGeneration() << SIMULATION_VERSION << ".txt";
+        gs_txt << "greater_square_generation_" << evol.getGeneration() << "_" << SIMULATION_VERSION << ".txt";
 
         ofstream file_writer;
 
         for(unsigned int i=0; i<evol.getPopulationSize(); i++)  //loop dos individuos
         {
-            system("clear");  //linux
-//            system("cls");  //windows
-            printf("Geracao: %d\n", evol.getGeneration());
-            printf("Individuo: %d\n", i);
+//            system("clear");  //linux
+            system("cls");  //windows
+            cout<<"Geracao: "<< evol.getGeneration()<<endl
+                <<"Individuo: "<<i<<endl;
 
             time_t start = time(NULL);
 
@@ -176,9 +179,9 @@ int main(int argc, char *argv[])
                         individual.addCell(ntEfferent);
 
                     error = true;
-                    system("clear");
-//                    system("cls");  //windows
-                    printf("Individuo %d possui cerebro incompativel!\n", i);
+//                    system("clear");
+                    system("cls");  //windows
+                    cout<<"Individuo "<<i<<"possui cerebro incompativel!"<<endl;
 
                     evol.setEvaluation(i,0); // -1 deve ser um valor muito ruim para que esse individuo nao se repita
                     game.score = -1;
@@ -199,7 +202,7 @@ int main(int argc, char *argv[])
             */
 
             if(!error)
-                evol.setEvaluation(i,(1-(game.getScore()/3932156)));
+                evol.setEvaluation(i,(game.getScore()/3932156));
 
             file_writer.open(score_txt.str().c_str(), ios_base::out | ios_base::app);
             file_writer << game.getScore() << "\n";
@@ -215,9 +218,6 @@ int main(int argc, char *argv[])
 
         //ao final do loop dos individuos, basta evoluir a geracao e salva-la:
         evol.evolve();
-
-        ostringstream checkpoint;
-        checkpoint << "checkpoint_" << SIMULATION_VERSION;
         evol.saveCheckPoint(checkpoint.str().c_str());
     }
 
