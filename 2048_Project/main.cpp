@@ -19,9 +19,9 @@
 #endif // win32
 
 
-#define GAME_MAX_TIME       30
+#define GAME_MAX_TIME       10
 #define NUM_GENERATIONS     25
-#define SIMULATION_VERSION  2
+#define SIMULATION_VERSION  3
 
 using namespace std;
 
@@ -93,8 +93,8 @@ int main(int argc, char *argv[])
     */
         evol.generateRandomPopulation("f(192);f(4000);", 100);
 
-//        system("clear");  //linux
-        system("cls");  //windows
+        system("clear");  //linux
+//        system("cls");  //windows
         cout << "Comecando um novo jogo!" << endl;
 
         sleep(1000);
@@ -116,17 +116,20 @@ int main(int argc, char *argv[])
     while(evol.getGeneration() < NUM_GENERATIONS)   //loop das geracoes
     {
         ostringstream score_txt;
-        score_txt << "scores_generation_" << evol.getGeneration() << "_" << SIMULATION_VERSION <<".txt";
+        score_txt << "scores_simulation_" << SIMULATION_VERSION <<".txt";
 
         ostringstream gs_txt;
-        gs_txt << "greater_square_generation_" << evol.getGeneration() << "_" << SIMULATION_VERSION << ".txt";
+        gs_txt << "greater_square_simulation_" << SIMULATION_VERSION << ".txt";
+
+        ostringstream eval_txt;
+        eval_txt << "eval_simulation_" << SIMULATION_VERSION <<".txt";
 
         ofstream file_writer;
 
         for(unsigned int i=0; i<evol.getPopulationSize(); i++)  //loop dos individuos
         {
-//            system("clear");  //linux
-            system("cls");  //windows
+            system("clear");  //linux
+//            system("cls");  //windows
             cout<<"Geracao: "<< evol.getGeneration()<<endl
                 <<"Individuo: "<<i<<endl;
 
@@ -179,8 +182,8 @@ int main(int argc, char *argv[])
                         individual.addCell(ntEfferent);
 
                     error = true;
-//                    system("clear");
-                    system("cls");  //windows
+                    system("clear");
+//                    system("cls");  //windows
                     cout<<"Individuo "<<i<<"possui cerebro incompativel!"<<endl;
 
                     evol.setEvaluation(i,0); // -1 deve ser um valor muito ruim para que esse individuo nao se repita
@@ -197,24 +200,45 @@ int main(int argc, char *argv[])
             * Entao uma boa funcao de avaliacao seria o score chegar a este valor, como a avaliacao varia
             * entre 0 e 1, faremos uma funcao normalizada:
             *
-            * 1-(score/3,932,156). Quanto mais proximo de zero, mais adaptado estarah o individuo
+            * score/3,932,156. Quanto mais proximo de um, mais adaptado estarah o individuo
             *
             */
 
+            float evaluation = game.getScore()/36860.0/*3932156.0*/; //score para chegar ao 2048
+//            cout<<"Avaliacao: "<< evaluation << endl;
+//            sleep(500);
+
             if(!error)
-                evol.setEvaluation(i,(game.getScore()/3932156));
+                evol.setEvaluation(i,evaluation);
+
 
             file_writer.open(score_txt.str().c_str(), ios_base::out | ios_base::app);
-            file_writer << game.getScore() << "\n";
+            file_writer << game.getScore() << " ";
             file_writer.close();
 
             file_writer.open(gs_txt.str().c_str(), ios_base::out | ios_base::app);
-            file_writer << game.getGreaterSquare() << "\n";
+            file_writer << game.getGreaterSquare() << " ";
+            file_writer.close();
+
+            file_writer.open(eval_txt.str().c_str(), ios_base::out | ios_base::app);
+            file_writer << evaluation << " ";
             file_writer.close();
 
             game.score=0;
             game.gameIsNotOver = true;
         }
+
+        file_writer.open(score_txt.str().c_str(), ios_base::out | ios_base::app);
+        file_writer << endl;
+        file_writer.close();
+
+        file_writer.open(gs_txt.str().c_str(), ios_base::out | ios_base::app);
+        file_writer << endl;
+        file_writer.close();
+
+        file_writer.open(eval_txt.str().c_str(), ios_base::out | ios_base::app);
+        file_writer << endl;
+        file_writer.close();
 
         //ao final do loop dos individuos, basta evoluir a geracao e salva-la:
         evol.evolve();

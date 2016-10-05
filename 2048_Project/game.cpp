@@ -305,9 +305,9 @@ void Game::showGame()
 {
     printf("\n\n");
 
-    for (unsigned int i = 0; i < ROWS; ++i)
+    for (unsigned int i = 0; i < ROWS; i++)
     {
-        for (unsigned int j = 0; j < COLS; ++j)
+        for (unsigned int j = 0; j < COLS; j++)
         {
             printf("\t");
             printTile(i, j);
@@ -376,9 +376,9 @@ floatv Game::getGameState()
 {
     floatv gameState;
 
-    for (unsigned int i = 0; i < ROWS; ++i)
+    for (unsigned int i = 0; i < ROWS; i++)
     {
-        for (unsigned int j = 0; j < COLS; ++j)
+        for (unsigned int j = 0; j < COLS; j++)
         {
             gameState.push_back(game[i][j]);    //converteu a matriz game para o vetor gameState
         }
@@ -396,9 +396,9 @@ int Game::getGreaterSquare()
 {
     int max = 0;
 
-    for (unsigned int i = 0; i < ROWS; ++i)
+    for (unsigned int i = 0; i < ROWS; i++)
     {
-        for (unsigned int j = 0; j < COLS; ++j)
+        for (unsigned int j = 0; j < COLS; j++)
         {
             if(game[i][j] > max)
             {
