@@ -20,8 +20,8 @@
 
 
 #define GAME_MAX_TIME       10
-#define NUM_GENERATIONS     25
-#define SIMULATION_VERSION  3
+#define NUM_GENERATIONS     150
+#define SIMULATION_VERSION  4
 
 using namespace std;
 
@@ -145,8 +145,8 @@ int main(int argc, char *argv[])
 //                printf("Tempo: %d\n", (time(NULL) - start));
 //                game.showGame();
 
-                //alimentamos o individuo com o estado atual do tabuleiro a cada jogada que ele realiza. (Isso estah correto?)
-                individual.setInput(game.getGameState());
+                //adicionamos os tiles nomalizados, para facilitar o aprendizado do agente
+                individual.setInput(game.getNormalizedGameState());
                 individual.process(p);
 
                 //vamos entao conferir se a rede conseguiu gerar duas saidas, se sim vamos processa-las como comando

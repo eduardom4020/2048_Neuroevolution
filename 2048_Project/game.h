@@ -16,6 +16,7 @@ public:
     int game[ROWS][COLS] = {{0}};
     int copyGame[ROWS][COLS] = {{0}};
     int score = 0;
+    int maxSquare = 0;
 
     bool gameIsNotOver = true;
 
@@ -41,6 +42,7 @@ public:
     void setInput();
     void setInput(int input);
     floatv getGameState();
+    floatv getNormalizedGameState();
     int getScore();
     int getGreaterSquare();
 

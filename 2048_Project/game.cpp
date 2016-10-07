@@ -17,9 +17,11 @@ int Game::randomTile()
     // 90% = 2, 10% = 4
     if (n >= FOUR_PERCENTILE)
     {
+//        this->maxSquare = 4;
         return 4;
     }
 
+//    this->maxSquare = 2;
     return 2;
 }
 
@@ -183,7 +185,9 @@ void Game::shiftRight()
         {
             if ((game[i][j] != 0) && (game[i][j] == game[i][j-1]))
             {
-                game[i][j] += game[i][j];
+                game[i][j] += game[i][j];   //tile que acabou de ser somado
+                //conferimos se este eh o tile maximo no mmento:
+//                if(game[i][j] > this->maxSquare) this->maxSquare = game[i][j];
 
                 //soma a jogada atual aos scores
                 score += game[i][j];
@@ -387,10 +391,32 @@ floatv Game::getGameState()
     return gameState;
 }
 
+floatv Game::getNormalizedGameState()
+{
+    floatv gameState;
+
+    float max = getGreaterSquare();
+
+    for (unsigned int i = 0; i < ROWS; i++)
+    {
+        for (unsigned int j = 0; j < COLS; j++)
+        {
+            gameState.push_back((float)game[i][j]/max);
+        }
+    }
+
+    return gameState;
+}
+
 int Game::getScore()
 {
     return score;
 }
+
+//int Game::getGreaterSquare()
+//{
+//    return this->maxSquare;
+//}
 
 int Game::getGreaterSquare()
 {
