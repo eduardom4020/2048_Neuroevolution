@@ -20,8 +20,8 @@
 
 
 #define GAME_MAX_TIME       10
-#define NUM_GENERATIONS     150
-#define SIMULATION_VERSION  4
+#define NUM_GENERATIONS     1000
+#define SIMULATION_VERSION  7
 
 using namespace std;
 
@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
      *f(192) = 192/32 = 6 genes fixos (configuracao geral)
      *r(min,max) indica quantos genes serao criados aleatoriamente, podendo ser neuronio ou coneccao
     */
-        evol.generateRandomPopulation("f(192);f(4000);", 100);
+        evol.generateRandomPopulation("f(192);f(8000);", 100);
 
         system("clear");  //linux
 //        system("cls");  //windows
@@ -146,7 +146,7 @@ int main(int argc, char *argv[])
 //                game.showGame();
 
                 //adicionamos os tiles nomalizados, para facilitar o aprendizado do agente
-                individual.setInput(game.getNormalizedGameState());
+                individual.setInput(game.getGameState());
                 individual.process(p);
 
                 //vamos entao conferir se a rede conseguiu gerar duas saidas, se sim vamos processa-las como comando
