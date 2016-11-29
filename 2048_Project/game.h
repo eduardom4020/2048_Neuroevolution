@@ -19,6 +19,7 @@ public:
     int prevScore = 0;
     int error_count = 0;
     int maxSquare = 0;
+    int monotonic_count = 0;
 
     bool gameIsNotOver = true;
 
@@ -47,6 +48,9 @@ public:
     floatv getNormalizedGameState();
     int getScore();
     int getGreaterSquare();
+
+    bool stateEquals();
+    bool isMonotonic();
 
 #endif // GAME_H
 };

@@ -21,7 +21,7 @@
 
 //#define GAME_MAX_TIME       10
 #define NUM_GENERATIONS     500
-#define SIMULATION_VERSION  17
+#define SIMULATION_VERSION  23
 
 using namespace std;
 
@@ -233,10 +233,6 @@ int main(int argc, char *argv[])
             file_writer << evaluation << " ";
             file_writer.close();
 
-//            game.score=0;
-//            game.prevScore=0;
-//            game.error_count=0;
-//            game.gameIsNotOver = true;
         }
 
         file_writer.open(score_txt.str().c_str(), ios_base::out | ios_base::app);

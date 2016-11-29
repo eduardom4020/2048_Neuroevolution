@@ -46,6 +46,7 @@ void Game::initGame()
     score = 0;
     prevScore = 0;
     error_count = 0;
+    monotonic_count = 0;
     gameIsNotOver = true;
 
 
@@ -147,7 +148,8 @@ void Game::shiftRight()
 {
     int moveCounter = 0;
 
-    prevScore = score;
+//    prevScore = score;
+    saveGameCopy();
 
     // tenta ir p direita o maximo possivel
     for (unsigned int i = 0; i < ROWS; ++i)
@@ -209,7 +211,16 @@ void Game::shiftRight()
         }
     }
 
-    if(prevScore == score)
+//    if(prevScore == score)
+//    {
+//        error_count += 1;
+//    }
+//    else
+//    {
+//        error_count = 0;
+//    }
+
+    if(stateEquals())
     {
         error_count += 1;
     }
@@ -218,7 +229,12 @@ void Game::shiftRight()
         error_count = 0;
     }
 
-    if ((countZeros() == 0) || (error_count > 16))
+    if(isMonotonic())
+    {
+        monotonic_count +=1;
+    }
+
+    if ((countZeros() == 0) || (error_count == 8))
     {
         gameIsNotOver = false;
         return;
@@ -445,4 +461,45 @@ int Game::getGreaterSquare()
     }
 
     return max;
+}
+
+bool Game::stateEquals()
+{
+    for (unsigned int i = 0; i < ROWS; i++)
+    {
+        for (unsigned int j = 0; j < COLS; j++)
+        {
+            if(game[i][j] != copyGame[i][j])
+            {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+//tomando como base que estamos empurando os quadrados sempre para a direita
+bool Game::isMonotonic()
+{
+    for (unsigned int i = 0; i < ROWS; i++)
+    {
+        for (unsigned int j = 0; j < COLS; j++)
+        {
+            if(game[i][j] != 0)
+            {
+                for(unsigned int I=i; I>=0; I--)
+                {
+                    if(game[I][j] > game[i][j])
+                        return false;
+                }
+                for(unsigned int J=j; J>=0; J--)
+                {
+                    if(game[i][J] > game[i][j])
+                        return false;
+                }
+            }
+        }
+    }
+
+    return true;
 }
