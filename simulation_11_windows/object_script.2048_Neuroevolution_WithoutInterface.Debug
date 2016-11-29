@@ -1,0 +1,12 @@
+INPUT(
+./debug\main.o
+./debug\game.o
+./debug\chromosome.o
+./debug\genalgorithm.o
+./debug\geneticinterface.o
+./debug\individual.o
+./debug\matrix.o
+./debug\modnet.o
+./debug\neuron.o
+./debug\util.o
+);

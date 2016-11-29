@@ -19,9 +19,9 @@
 #endif // win32
 
 
-#define GAME_MAX_TIME       10
-#define NUM_GENERATIONS     1000
-#define SIMULATION_VERSION  7
+//#define GAME_MAX_TIME       10
+#define NUM_GENERATIONS     500
+#define SIMULATION_VERSION  17
 
 using namespace std;
 
@@ -32,6 +32,15 @@ void sleep(int milliseconds)
     Sleep(milliseconds);
     #else
     usleep(milliseconds * 1000);
+    #endif // win32
+}
+
+void clear()
+{
+    #ifdef WIN32
+    system("cls");  //windows
+    #else
+    system("clear");  //linux
     #endif // win32
 }
 
@@ -93,8 +102,7 @@ int main(int argc, char *argv[])
     */
         evol.generateRandomPopulation("f(192);f(8000);", 100);
 
-        system("clear");  //linux
-//        system("cls");  //windows
+        clear();
         cout << "Comecando um novo jogo!" << endl;
 
         sleep(1000);
@@ -126,21 +134,23 @@ int main(int argc, char *argv[])
 
         ofstream file_writer;
 
+        clear();
+        cout<<"Geracao: "<< evol.getGeneration()<<endl;
+
         for(unsigned int i=0; i<evol.getPopulationSize(); i++)  //loop dos individuos
         {
-            system("clear");  //linux
-//            system("cls");  //windows
-            cout<<"Geracao: "<< evol.getGeneration()<<endl
-                <<"Individuo: "<<i<<endl;
+//            clear();
+//            cout<<"Geracao: "<< evol.getGeneration()<<endl
+//                <<"Individuo: "<<i<<endl;
 
-            time_t start = time(NULL);
+//            time_t start = time(NULL);
 
             //o individuo i eh entao traduzido para a codificacao das redes neurais feita pelo Yuri
             g_interface.setPhenotype(evol.getIndividual(i), individual);
 
             game.initGame();
 
-            while ((game.gameIsNotOver) && ((time(NULL) - start) < GAME_MAX_TIME))
+            while(game.gameIsNotOver)
             {
 //                printf("Tempo: %d\n", (time(NULL) - start));
 //                game.showGame();
@@ -182,15 +192,14 @@ int main(int argc, char *argv[])
                         individual.addCell(ntEfferent);
 
                     error = true;
-                    system("clear");
-//                    system("cls");  //windows
+                    clear();
                     cout<<"Individuo "<<i<<"possui cerebro incompativel!"<<endl;
 
                     evol.setEvaluation(i,0); // -1 deve ser um valor muito ruim para que esse individuo nao se repita
                     game.score = -1;
                     game.gameIsNotOver = false;
 
-                    sleep(500);
+//                    sleep(500);
                 }
 
             }
@@ -224,8 +233,10 @@ int main(int argc, char *argv[])
             file_writer << evaluation << " ";
             file_writer.close();
 
-            game.score=0;
-            game.gameIsNotOver = true;
+//            game.score=0;
+//            game.prevScore=0;
+//            game.error_count=0;
+//            game.gameIsNotOver = true;
         }
 
         file_writer.open(score_txt.str().c_str(), ios_base::out | ios_base::app);

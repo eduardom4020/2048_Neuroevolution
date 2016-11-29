@@ -16,6 +16,8 @@ public:
     int game[ROWS][COLS] = {{0}};
     int copyGame[ROWS][COLS] = {{0}};
     int score = 0;
+    int prevScore = 0;
+    int error_count = 0;
     int maxSquare = 0;
 
     bool gameIsNotOver = true;

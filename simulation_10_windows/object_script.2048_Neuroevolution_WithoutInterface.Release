@@ -1,0 +1,12 @@
+INPUT(
+./release\main.o
+./release\game.o
+./release\chromosome.o
+./release\genalgorithm.o
+./release\geneticinterface.o
+./release\individual.o
+./release\matrix.o
+./release\modnet.o
+./release\neuron.o
+./release\util.o
+);

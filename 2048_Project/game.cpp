@@ -44,6 +44,8 @@ void Game::initGame()
     emptyGame();
 
     score = 0;
+    prevScore = 0;
+    error_count = 0;
     gameIsNotOver = true;
 
 
@@ -145,6 +147,7 @@ void Game::shiftRight()
 {
     int moveCounter = 0;
 
+    prevScore = score;
 
     // tenta ir p direita o maximo possivel
     for (unsigned int i = 0; i < ROWS; ++i)
@@ -206,8 +209,16 @@ void Game::shiftRight()
         }
     }
 
+    if(prevScore == score)
+    {
+        error_count += 1;
+    }
+    else
+    {
+        error_count = 0;
+    }
 
-    if (countZeros() == 0)
+    if ((countZeros() == 0) || (error_count > 16))
     {
         gameIsNotOver = false;
         return;
